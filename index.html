@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PastelCalc ✨ Cute Aesthetic Calculator</title>
+  <!-- Google Fonts: Quicksand & Fredoka -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="strawberry">
+  <div class="app-background">
+    <div class="floating-blob blob-1"></div>
+    <div class="floating-blob blob-2"></div>
+    <div class="floating-blob blob-3"></div>
+  </div>
+
+  <div class="container">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="brand">
+        <span class="brand-mascot" id="brandMascot" title="Click me for a cute reaction! (◕‿◕✿)">🍓</span>
+        <div class="brand-text">
+          <h1 class="brand-title">PastelCalc</h1>
+          <span class="brand-tagline">aesthetic & smart</span>
+        </div>
+      </div>
+
+      <div class="nav-controls">
+        <!-- Sound Effect Toggle -->
+        <button id="soundToggle" class="icon-btn" title="Toggle cute sound effects" aria-label="Toggle sound">
+          <span class="icon">🔊</span>
+        </button>
+
+        <!-- Theme Selector Menu -->
+        <div class="theme-dropdown">
+          <button id="themeBtn" class="pill-btn theme-picker-pill" title="Choose Cute Theme" aria-label="Theme menu">
+            <span class="swatch current-theme-swatch" id="currentThemeSwatch"></span>
+            <span class="theme-label-text" id="currentThemeLabel">Strawberry 🍓</span>
+            <span class="dropdown-arrow">▾</span>
+          </button>
+          <div class="theme-menu" id="themeMenu">
+            <div class="theme-menu-header">Select Aesthetic Theme</div>
+            <button class="theme-option active" data-theme-val="strawberry">
+              <span class="swatch strawberry-swatch"></span>
+              <div class="theme-info">
+                <span class="theme-name">Strawberry Milk 🍓</span>
+                <span class="theme-desc">Soft pinks & cream</span>
+              </div>
+            </button>
+            <button class="theme-option" data-theme-val="matcha">
+              <span class="swatch matcha-swatch"></span>
+              <div class="theme-info">
+                <span class="theme-name">Matcha Latte 🍵</span>
+                <span class="theme-desc">Sage green & oat</span>
+              </div>
+            </button>
+            <button class="theme-option" data-theme-val="lavender">
+              <span class="swatch lavender-swatch"></span>
+              <div class="theme-info">
+                <span class="theme-name">Lavender Cloud 🫐</span>
+                <span class="theme-desc">Dreamy lilac & violet</span>
+              </div>
+            </button>
+            <button class="theme-option" data-theme-val="honey">
+              <span class="swatch honey-swatch"></span>
+              <div class="theme-info">
+                <span class="theme-name">Honey Butter 🍯</span>
+                <span class="theme-desc">Warm amber & gold</span>
+              </div>
+            </button>
+            <button class="theme-option" data-theme-val="midnight">
+              <span class="swatch midnight-swatch"></span>
+              <div class="theme-info">
+                <span class="theme-name">Midnight Berry 🌙</span>
+                <span class="theme-desc">Neon berry dark mode</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- History Drawer Toggle (for mobile) -->
+        <button id="toggleHistoryBtn" class="pill-btn mobile-history-btn" title="View History Tape">
+          <span>📜 History</span>
+          <span class="history-badge" id="historyCountBadge">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Split: Calculator + History Tape -->
+    <main class="main-layout">
+      <!-- Calculator Box -->
+      <section class="calc-card">
+        <!-- Cute Mascot Companion Bar -->
+        <div class="mascot-bar">
+          <div class="companion" id="companion">
+            <span class="companion-avatar" id="companionAvatar">🐰</span>
+            <div class="companion-bubble" id="companionSpeech">
+              Ready to crunch some numbers! ✨
+            </div>
+          </div>
+          <!-- Current Active Set Status -->
+          <div class="active-set-tag" id="activeSetTag" title="Calculations are being saved to this set">
+            <span class="dot"></span>
+            <span id="currentSetHeadingPreview">Active Set: New Calculations</span>
+          </div>
+        </div>
+
+        <!-- Calculator Display Area -->
+        <div class="calc-display-wrapper">
+          <!-- History Preview Expression -->
+          <div class="calc-prev-expression" id="calcPrevExpr" title="Previous calculation"></div>
+          
+          <!-- Interactive Editable Expression Input -->
+          <div class="calc-expression-row">
+            <input 
+              type="text" 
+              id="calcInput" 
+              class="calc-input" 
+              placeholder="0" 
+              autocomplete="off" 
+              spellcheck="false"
+              title="Click to manually edit expression with keyboard"
+            />
+          </div>
+
+          <!-- Live Result Preview -->
+          <div class="calc-result-row">
+            <span class="calc-result-prefix">=</span>
+            <span class="calc-result" id="calcLiveResult">0</span>
+          </div>
+        </div>
+
+        <!-- Keypad Actions & Controls -->
+        <div class="calc-keypad">
+          <!-- Row 1: Memory / Clear helpers -->
+          <button class="key func-key" data-action="clear-all" title="Clear Everything (Escape)">AC</button>
+          <button class="key func-key" data-action="delete" title="Backspace (Delete)">⌫</button>
+          <button class="key func-key" data-action="paren" title="Parentheses ()">( )</button>
+          <button class="key op-key" data-action="operator" data-val="/" title="Divide (/)">÷</button>
+
+          <!-- Row 2 -->
+          <button class="key num-key" data-val="7">7</button>
+          <button class="key num-key" data-val="8">8</button>
+          <button class="key num-key" data-val="9">9</button>
+          <button class="key op-key" data-action="operator" data-val="*" title="Multiply (*)">×</button>
+
+          <!-- Row 3 -->
+          <button class="key num-key" data-val="4">4</button>
+          <button class="key num-key" data-val="5">5</button>
+          <button class="key num-key" data-val="6">6</button>
+          <button class="key op-key" data-action="operator" data-val="-" title="Minus (-)">−</button>
+
+          <!-- Row 4 -->
+          <button class="key num-key" data-val="1">1</button>
+          <button class="key num-key" data-val="2">2</button>
+          <button class="key num-key" data-val="3">3</button>
+          <button class="key op-key" data-action="operator" data-val="+" title="Add (+)">+</button>
+
+          <!-- Row 5 -->
+          <button class="key func-key" data-action="negate" title="Positive/Negative toggle">±</button>
+          <button class="key num-key" data-val="0">0</button>
+          <button class="key num-key" data-val=".">.</button>
+          <button class="key func-key" data-action="percent" title="Percentage (%)">%</button>
+        </div>
+
+        <!-- Extra Utility Row: Powers, Roots, New Set Button, Equals -->
+        <div class="calc-utility-row">
+          <button class="key mini-key" data-action="square" title="Square (x²)">x²</button>
+          <button class="key mini-key" data-action="sqrt" title="Square Root (√)">√</button>
+          <button class="key new-set-key" id="btnNewSet" title="Start a brand new calculation set with its own auto-heading">
+            <span>✨ New Set</span>
+          </button>
+          <button class="key equals-key" data-action="equals" title="Calculate and save (Enter or =)">=</button>
+        </div>
+      </section>
+
+      <!-- History & Calculation Tape Drawer / Sidebar -->
+      <section class="history-panel" id="historyPanel">
+        <div class="history-header">
+          <div class="history-title-area">
+            <h2 class="history-title">Calculation Journal</h2>
+            <span class="history-subtitle">Saved sets with smart headings</span>
+          </div>
+          <div class="history-header-actions">
+            <!-- Export / Copy / Clear -->
+            <button class="icon-btn-sm" id="btnExportHistory" title="Export or Copy Journal">
+              <span>📋</span>
+            </button>
+            <button class="icon-btn-sm" id="btnClearHistory" title="Clear All History">
+              <span>🗑️</span>
+            </button>
+            <button class="icon-btn-sm close-history-btn" id="btnCloseHistory" title="Close Panel">
+              <span>✕</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter / Search in History -->
+        <div class="history-search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="historySearchInput" placeholder="Search headings, notes, calculations..." autocomplete="off">
+        </div>
+
+        <!-- Sets and items container -->
+        <div class="history-list" id="historyList">
+          <!-- Dynamic sets populated by app.js -->
+        </div>
+
+        <!-- Empty state -->
+        <div class="history-empty" id="historyEmpty">
+          <div class="empty-icon">🎀</div>
+          <h3>No calculations yet!</h3>
+          <p>Crunch numbers on the calculator to create automatic sets with editable smart headings.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer with Tips & Shortcuts -->
+    <footer class="app-footer">
+      <div class="footer-hint">
+        <span>💡 <b>Pro tip:</b> Click any heading or note to edit! Keyboard numbers, <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>Enter</code> work seamlessly.</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Edit Item Modal -->
+  <div class="modal-overlay" id="editModalOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalTitle">✏️ Edit Calculation</h3>
+        <button class="icon-btn-sm" id="modalCloseBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="modal-label" for="modalExpressionInput">Math Expression:</label>
+        <input type="text" id="modalExpressionInput" class="modal-input" placeholder="e.g. 45 + 12 * 2">
+        
+        <div class="modal-recalc-preview">
+          <span>New Result:</span>
+          <strong id="modalCalculatedResult">0</strong>
+        </div>
+
+        <label class="modal-label" for="modalNoteInput">Item Note / Label (Optional):</label>
+        <input type="text" id="modalNoteInput" class="modal-input" placeholder="e.g. Coffee, Hotel, Discount">
+      </div>
+      <div class="modal-footer">
+        <button class="pill-btn secondary-btn" id="modalCancelBtn">Cancel</button>
+        <button class="pill-btn primary-btn" id="modalSaveBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
